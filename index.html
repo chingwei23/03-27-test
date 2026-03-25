@@ -6,11 +6,10 @@
     <title>逗點教室 🔥 品牌文案產生器</title>
     <style>
         :root {
-            /* 品牌配色：熱血橘、溫暖大地色 */
-            --primary-color: #E65100; /* 熱血橘 */
+            --primary-color: #E65100;
             --primary-hover: #F57C00;
-            --secondary-color: #FFB300; /* 溫暖黃 */
-            --bg-color: #FFF8F1; /* 溫暖底色 */
+            --secondary-color: #FFB300;
+            --bg-color: #FFF8F1;
             --panel-bg: #FFFFFF;
             --text-main: #3E2723;
             --text-muted: #795548;
@@ -20,254 +19,50 @@
         }
 
         * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif, -apple-system; }
-        
-        body { 
-            margin: 0; 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            line-height: 1.6;
-        }
-
-        header { 
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
-            color: white; 
-            padding: 1.2rem 2rem; 
-            text-align: center; 
-            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.15); 
-        }
-        
+        body { margin: 0; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        header { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 1.2rem 2rem; text-align: center; box-shadow: 0 4px 12px rgba(230, 81, 0, 0.15); }
         header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; letter-spacing: 1px; }
-
-        .container { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 1.5rem; 
-            max-width: 1200px; 
-            margin: 2rem auto; 
-            padding: 0 1.5rem; 
-        }
-
-        /* 左側表單區 */
-        .sidebar { 
-            flex: 1 1 350px; 
-            background: var(--panel-bg); 
-            padding: 1.5rem; 
-            border-radius: var(--radius); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
-            border: 1px solid var(--border-color);
-        }
-
-        /* 右側輸出區 */
-        .main-content { 
-            flex: 2 1 600px; 
-            display: flex; 
-            flex-direction: column; 
-        }
-
-        .section-title { 
-            font-size: 1.1rem; 
-            font-weight: 700; 
-            color: var(--primary-color); 
-            margin-bottom: 1rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-        }
-
-        label { 
-            display: block; 
-            font-weight: 600; 
-            margin-bottom: 0.4rem; 
-            color: var(--text-main); 
-            font-size: 0.95rem;
-        }
-
-        /* 注意這裡把 password 改成了 text，避免被密碼管理員覆蓋 */
-        input[type="text"], textarea, select { 
-            width: 100%; 
-            padding: 10px 12px; 
-            border: 1px solid #E0E0E0; 
-            border-radius: 8px; 
-            margin-bottom: 1.2rem; 
-            font-size: 0.95rem; 
-            transition: border-color 0.2s;
-            background-color: #FAFAFA;
-        }
-        
-        input:focus, textarea:focus, select:focus { 
-            outline: none; 
-            border-color: var(--primary-color); 
-            background-color: #FFF;
-        }
-
+        .container { display: flex; flex-wrap: wrap; gap: 1.5rem; max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+        .sidebar { flex: 1 1 350px; background: var(--panel-bg); padding: 1.5rem; border-radius: var(--radius); box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid var(--border-color); }
+        .main-content { flex: 2 1 600px; display: flex; flex-direction: column; }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-main); font-size: 0.95rem; }
+        input[type="text"], textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #E0E0E0; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.95rem; transition: border-color 0.2s; background-color: #FAFAFA; }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-color); background-color: #FFF; }
         textarea { resize: vertical; min-height: 80px; }
-
-        .btn { 
-            background-color: var(--primary-color); 
-            color: white; 
-            border: none; 
-            padding: 12px; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 1rem; 
-            width: 100%; 
-            transition: all 0.2s; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px;
-        }
+        .btn { background-color: var(--primary-color); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; width: 100%; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
         .btn:disabled { background-color: #BCAAA4; cursor: not-allowed; transform: none; }
-        
-        .btn-outline { 
-            background: transparent; 
-            color: var(--primary-color); 
-            border: 1px solid var(--primary-color); 
-        }
+        .btn-outline { background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); }
         .btn-outline:hover { background: var(--bg-color); }
-
-        .mode-switch { 
-            display: flex; 
-            gap: 10px; 
-            margin-bottom: 1.2rem; 
-            background: #F5F5F5; 
-            padding: 4px; 
-            border-radius: 8px; 
-        }
-        .mode-switch label { 
-            flex: 1; 
-            text-align: center; 
-            padding: 8px; 
-            margin: 0; 
-            cursor: pointer; 
-            border-radius: 6px; 
-            font-size: 0.9rem; 
-            color: var(--text-muted); 
-            transition: 0.2s;
-        }
+        .mode-switch { display: flex; gap: 10px; margin-bottom: 1.2rem; background: #F5F5F5; padding: 4px; border-radius: 8px; }
+        .mode-switch label { flex: 1; text-align: center; padding: 8px; margin: 0; cursor: pointer; border-radius: 6px; font-size: 0.9rem; color: var(--text-muted); transition: 0.2s; }
         .mode-switch input { display: none; }
-        .mode-switch input:checked + label { 
-            background: white; 
-            color: var(--primary-color); 
-            font-weight: 700; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-        }
-
-        .api-section { 
-            background: #FFF3E0; 
-            padding: 1rem; 
-            border-radius: 8px; 
-            margin-bottom: 1.2rem; 
-            display: none; 
-            border: 1px dashed var(--primary-color);
-        }
+        .mode-switch input:checked + label { background: white; color: var(--primary-color); font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .api-section { background: #FFF3E0; padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; display: none; border: 1px dashed var(--primary-color); }
         #mode-api:checked ~ * .api-section { display: block; }
         .api-input-wrap { display: flex; gap: 8px; }
         .api-input-wrap input { margin-bottom: 0; }
         .api-input-wrap button { width: auto; white-space: nowrap; padding: 0 15px; }
         .status-msg { font-size: 0.8rem; color: var(--success-color); margin-top: 6px; display: none; font-weight: 600; }
-
-        .inspiration-box { 
-            background: var(--bg-color); 
-            padding: 1rem; 
-            border-radius: 8px; 
-            border: 1px solid var(--border-color);
-            margin-top: 1rem;
-        }
+        .inspiration-box { background: var(--bg-color); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 1rem; }
         .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
-        .tag { 
-            background: white; 
-            border: 1px solid var(--border-color); 
-            padding: 4px 10px; 
-            border-radius: 20px; 
-            font-size: 0.8rem; 
-            cursor: pointer; 
-            color: var(--text-muted); 
-            transition: 0.2s; 
-        }
+        .tag { background: white; border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; color: var(--text-muted); transition: 0.2s; }
         .tag:hover { border-color: var(--primary-color); color: var(--primary-color); }
-
-        .tabs { 
-            display: flex; 
-            background: var(--panel-bg); 
-            border-radius: var(--radius) var(--radius) 0 0; 
-            overflow: hidden; 
-            border-bottom: 2px solid var(--border-color); 
-        }
-        .tab { 
-            flex: 1; 
-            background: none; 
-            border: none; 
-            padding: 12px 10px; 
-            font-size: 0.95rem; 
-            font-weight: 600; 
-            color: var(--text-muted); 
-            cursor: pointer; 
-            transition: 0.2s; 
-            border-bottom: 3px solid transparent; 
-        }
+        .tabs { display: flex; background: var(--panel-bg); border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; border-bottom: 2px solid var(--border-color); }
+        .tab { flex: 1; background: none; border: none; padding: 12px 10px; font-size: 0.95rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: 0.2s; border-bottom: 3px solid transparent; }
         .tab:hover { background: var(--bg-color); }
-        .tab.active { 
-            color: var(--primary-color); 
-            border-bottom-color: var(--primary-color); 
-            background: white; 
-        }
-
-        .output-container { 
-            background: var(--panel-bg); 
-            padding: 1.5rem; 
-            border-radius: 0 0 var(--radius) var(--radius); 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-        }
+        .tab.active { color: var(--primary-color); border-bottom-color: var(--primary-color); background: white; }
+        .output-container { background: var(--panel-bg); padding: 1.5rem; border-radius: 0 0 var(--radius) var(--radius); box-shadow: 0 4px 15px rgba(0,0,0,0.04); flex: 1; display: flex; flex-direction: column; }
         .tab-pane { display: none; flex: 1; flex-direction: column; }
         .tab-pane.active { display: flex; }
-        
-        .output-box { 
-            flex: 1; 
-            width: 100%; 
-            min-height: 350px; 
-            padding: 15px; 
-            font-size: 0.95rem; 
-            line-height: 1.6; 
-            background: #FAFAFA; 
-            border: 1px solid #E0E0E0; 
-            border-radius: 8px; 
-            margin-bottom: 1rem; 
-            resize: vertical; 
-            font-family: inherit;
-        }
-
-        .copy-btn { 
-            align-self: flex-end; 
-            width: auto; 
-            padding: 8px 20px; 
-            background-color: var(--text-main); 
-        }
+        .output-box { flex: 1; width: 100%; min-height: 350px; padding: 15px; font-size: 0.95rem; line-height: 1.6; background: #FAFAFA; border: 1px solid #E0E0E0; border-radius: 8px; margin-bottom: 1rem; resize: vertical; font-family: inherit; }
+        .copy-btn { align-self: flex-end; width: auto; padding: 8px 20px; background-color: var(--text-main); }
         .copy-btn:hover { background-color: #5D4037; }
-
         .loader-wrapper { display: none; text-align: center; padding: 20px; color: var(--primary-color); font-weight: bold; }
-        .spinner { 
-            border: 4px solid rgba(230, 81, 0, 0.1); 
-            width: 36px; height: 36px; 
-            border-radius: 50%; 
-            border-left-color: var(--primary-color); 
-            animation: spin 1s linear infinite; 
-            display: inline-block; 
-            vertical-align: middle; 
-            margin-right: 10px; 
-        }
+        .spinner { border: 4px solid rgba(230, 81, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: var(--primary-color); animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        @media (max-width: 768px) {
-            .container { flex-direction: column; }
-            .tabs { overflow-x: auto; white-space: nowrap; }
-            .tab { flex: none; padding: 12px 15px; }
-        }
+        @media (max-width: 768px) { .container { flex-direction: column; } .tabs { overflow-x: auto; white-space: nowrap; } .tab { flex: none; padding: 12px 15px; } }
     </style>
 </head>
 <body>
@@ -382,11 +177,11 @@
 `;
 
     const PLATFORM_RULES = {
-        FB: "【FB 規範】溫暖感性、具深度。適合長篇說故事，引發家長共鳴。結尾引導留言互動。",
-        IG_Post: "【IG貼文 規範】熱血、精煉、活力。貼近學生語感。多用短句與重點 Hashtag (#教育可以不一樣 #熱血變強)。",
-        IG_Story: "【IG限動 規範】極短句(1-2句話)。口語化、日常感。呈現活動熱血氛圍或金句，適合搭配互動貼紙。",
-        LINE: "【LINE推播 規範】親切、專業、直接。破題點出家長為何需要看，像專業班主任的報告，必須有明確行動呼籲(CTA)。",
-        Threads: "【Threads 規範】坦率真實、碎碎念。分享真實教育現場痛點或有趣對話，引發共鳴討論，不官腔。"
+        FB: "【FB 規範】長文敘事(300-500字)。說故事、有溫度。結尾引導家長留言互動。",
+        IG_Post: "【IG貼文 規範】精簡有力(150字以內)。金句感、附 hashtag。",
+        IG_Story: "【IG限動 規範】即時互動(1-2句話)。日常感、口語化。適合搭配互動貼紙。",
+        LINE: "【LINE推播 規範】直接行動(100字以內)。親切、有明確 CTA。像專業班主任的報告。",
+        Threads: "【Threads 規範】對話式(200字以內)。像跟朋友聊天，坦率分享教育痛點或對話。"
     };
 
     const INSPIRATION_DATA = {
@@ -418,8 +213,10 @@
     };
 
     window.onload = () => {
-        const savedKey = localStorage.getItem('gemini_api_key');
+        let savedKey = localStorage.getItem('gemini_api_key');
         if(savedKey) {
+            // 自動修復被污染的暫存金鑰（去掉引號跟空白）
+            savedKey = savedKey.replace(/['"\s]+/g, '');
             document.getElementById('apiKey').value = savedKey;
             document.getElementById('apiStatus').style.display = 'block';
         }
@@ -434,10 +231,14 @@
     }
 
     function saveApiKey() {
-        const key = document.getElementById('apiKey').value.trim();
+        let key = document.getElementById('apiKey').value;
+        // 終極防禦：儲存前強制清除所有雙引號、單引號與空白
+        key = key.replace(/['"\s]+/g, '');
         if(key) {
+            document.getElementById('apiKey').value = key; // 讓畫面上的字也變乾淨
             localStorage.setItem('gemini_api_key', key);
             document.getElementById('apiStatus').style.display = 'block';
+            document.getElementById('apiStatus').innerText = '✅ API Key 已清洗乾淨並儲存';
         } else {
             alert('請輸入有效的 API Key');
         }
@@ -510,8 +311,8 @@
     }
 
     async function runAPI(type, theme, msg, notes) {
-        // 強制移除所有可能夾帶的空白或換行字元
-        const apiKey = document.getElementById('apiKey').value.replace(/\s+/g, '');
+        // 發送前再次強制清洗 API Key
+        let apiKey = document.getElementById('apiKey').value.replace(/['"\s]+/g, '');
         if(!apiKey) return alert('請先填寫並儲存 Gemini API Key！');
 
         const btn = document.getElementById('generateBtn');
@@ -544,9 +345,7 @@ JSON 的 Key 必須完全吻合： "FB", "IG_Post", "IG_Story", "LINE", "Threads
 `;
 
         try {
-            // 使用 encodeURIComponent 確保網址解析安全
-            const safeKey = encodeURIComponent(apiKey);
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${safeKey}`, {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
