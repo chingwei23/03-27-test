@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逗點教室 🔥 品牌文案產生器</title>
+    <style>
+        :root {
+            /* 品牌配色：熱血橘、溫暖大地色 */
+            --primary-color: #E65100; /* 熱血橘 */
+            --primary-hover: #F57C00;
+            --secondary-color: #FFB300; /* 溫暖黃 */
+            --bg-color: #FFF8F1; /* 溫暖底色 */
+            --panel-bg: #FFFFFF;
+            --text-main: #3E2723; /* 深咖啡色字體，比純黑更有溫度 */
+            --text-muted: #795548;
+            --border-color: #FFE0B2;
+            --success-color: #43A047;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; font-family: 'Noto Sans TC', sans-serif, -apple-system; }
+        
+        body { 
+            margin: 0; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            line-height: 1.6;
+        }
+
+        header { 
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+            color: white; 
+            padding: 1.2rem 2rem; 
+            text-align: center; 
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.15); 
+        }
+        
+        header h1 { margin: 0; font-size: 1.6rem; font-weight: 700; letter-spacing: 1px; }
+
+        .container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 1.5rem; 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 0 1.5rem; 
+        }
+
+        /* 左側表單區 */
+        .sidebar { 
+            flex: 1 1 350px; 
+            background: var(--panel-bg); 
+            padding: 1.5rem; 
+            border-radius: var(--radius); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+            border: 1px solid var(--border-color);
+        }
+
+        /* 右側輸出區 */
+        .main-content { 
+            flex: 2 1 600px; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        .section-title { 
+            font-size: 1.1rem; 
+            font-weight: 700; 
+            color: var(--primary-color); 
+            margin-bottom: 1rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+        }
+
+        label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 0.4rem; 
+            color: var(--text-main); 
+            font-size: 0.95rem;
+        }
+
+        input[type="text"], input[type="password"], textarea, select { 
+            width: 100%; 
+            padding: 10px 12px; 
+            border: 1px solid #E0E0E0; 
+            border-radius: 8px; 
+            margin-bottom: 1.2rem; 
+            font-size: 0.95rem; 
+            transition: border-color 0.2s;
+            background-color: #FAFAFA;
+        }
+        
+        input:focus, textarea:focus, select:focus { 
+            outline: none; 
+            border-color: var(--primary-color); 
+            background-color: #FFF;
+        }
+
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* 按鈕樣式 */
+        .btn { 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1rem; 
+            width: 100%; 
+            transition: all 0.2s; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 8px;
+        }
+        .btn:hover { background-color: var(--primary-hover); transform: translateY(-1px); }
+        .btn:disabled { background-color: #BCAAA4; cursor: not-allowed; transform: none; }
+        
+        .btn-outline { 
+            background: transparent; 
+            color: var(--primary-color); 
+            border: 1px solid var(--primary-color); 
+        }
+        .btn-outline:hover { background: var(--bg-color); }
+
+        /* 模式切換 */
+        .mode-switch { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 1.2rem; 
+            background: #F5F5F5; 
+            padding: 4px; 
+            border-radius: 8px; 
+        }
+        .mode-switch label { 
+            flex: 1; 
+            text-align: center; 
+            padding: 8px; 
+            margin: 0; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            font-size: 0.9rem; 
+            color: var(--text-muted); 
+            transition: 0.2s;
+        }
+        .mode-switch input { display: none; }
+        .mode-switch input:checked + label { 
+            background: white; 
+            color: var(--primary-color); 
+            font-weight: 700; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+        }
+
+        /* API 設定區 */
+        .api-section { 
+            background: #FFF3E0; 
+            padding: 1rem; 
+            border-radius: 8px; 
+            margin-bottom: 1.2rem; 
+            display: none; 
+            border: 1px dashed var(--primary-color);
+        }
+        #mode-api:checked ~ * .api-section { display: block; }
+        .api-input-wrap { display: flex; gap: 8px; }
+        .api-input-wrap input { margin-bottom: 0; }
+        .api-input-wrap button { width: auto; white-space: nowrap; padding: 0 15px; }
+        .status-msg { font-size: 0.8rem; color: var(--success-color); margin-top: 6px; display: none; font-weight: 600; }
+
+        /* 靈感角落 */
+        .inspiration-box { 
+            background: var(--bg-color); 
+            padding: 1rem; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .tag { 
+            background: white; 
+            border: 1px solid var(--border-color); 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            color: var(--text-muted); 
+            transition: 0.2s; 
+        }
+        .tag:hover { border-color: var(--primary-color); color: var(--primary-color); }
+
+        /* 頁籤設計 */
+        .tabs { 
+            display: flex; 
+            background: var(--panel-bg); 
+            border-radius: var(--radius) var(--radius) 0 0; 
+            overflow: hidden; 
+            border-bottom: 2px solid var(--border-color); 
+        }
+        .tab { 
+            flex: 1; 
+            background: none; 
+            border: none; 
+            padding: 12px 10px; 
+            font-size: 0.95rem; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            cursor: pointer; 
+            transition: 0.2s; 
+            border-bottom: 3px solid transparent; 
+        }
+        .tab:hover { background: var(--bg-color); }
+        .tab.active { 
+            color: var(--primary-color); 
+            border-bottom-color: var(--primary-color); 
+            background: white; 
+        }
+
+        /* 輸出區塊 */
+        .output-container { 
+            background: var(--panel-bg); 
+            padding: 1.5rem; 
+            border-radius: 0 0 var(--radius) var(--radius); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .tab-pane { display: none; flex: 1; flex-direction: column; }
+        .tab-pane.active { display: flex; }
+        
+        .output-box { 
+            flex: 1; 
+            width: 100%; 
+            min-height: 350px; 
+            padding: 15px; 
+            font-size: 0.95rem; 
+            line-height: 1.6; 
+            background: #FAFAFA; 
+            border: 1px solid #E0E0E0; 
+            border-radius: 8px; 
+            margin-bottom: 1rem; 
+            resize: vertical; 
+            font-family: inherit;
+        }
+
+        .copy-btn { 
+            align-self: flex-end; 
+            width: auto; 
+            padding: 8px 20px; 
+            background-color: var(--text-main); 
+        }
+        .copy-btn:hover { background-color: #5D4037; }
+
+        /* Loading 動畫 */
+        .loader-wrapper { display: none; text-align: center; padding: 20px; color: var(--primary-color); font-weight: bold; }
+        .spinner { 
+            border: 4px solid rgba(230, 81, 0, 0.1); 
+            width: 36px; height: 36px; 
+            border-radius: 50%; 
+            border-left-color: var(--primary-color); 
+            animation: spin 1s linear infinite; 
+            display: inline-block; 
+            vertical-align: middle; 
+            margin-right: 10px; 
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column; }
+            .tabs { overflow-x: auto; white-space: nowrap; }
+            .tab { flex: none; padding: 12px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔥 逗點教室｜品牌社群文案產生器</h1>
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <div class="section-title">✨ 設定任務條件</div>
+        
+        <div class="mode-switch">
+            <input type="radio" name="mode" id="mode-prompt" value="prompt" checked onchange="toggleMode()">
+            <label for="mode-prompt">📋 組合 Prompt</label>
+            <input type="radio" name="mode" id="mode-api" value="api" onchange="toggleMode()">
+            <label for="mode-api">🤖 API 直接產出</label>
+        </div>
+
+        <div class="api-section" id="apiConfig">
+            <label>🔑 Gemini API Key</label>
+            <div class="api-input-wrap">
+                <input type="password" id="apiKey" placeholder="AIzaSy...">
+                <button class="btn btn-outline" onclick="saveApiKey()">記住</button>
+            </div>
+            <div id="apiStatus" class="status-msg">✅ API Key 已安全儲存於瀏覽器</div>
+        </div>
+
+        <label for="copyType">📂 文案類型</label>
+        <select id="copyType" onchange="updateInspiration()">
+            <option value="產品介紹">產品介紹 (課程 / 營隊 / 講座)</option>
+            <option value="促銷活動">促銷活動 (招生 / 報名 / 優惠)</option>
+            <option value="品牌故事">品牌故事 (理念 / 翻轉教育 / 案例)</option>
+            <option value="互動問答">互動問答 (教育痛點 / 迷思破解)</option>
+            <option value="節日借勢">節日借勢 (大考前夕 / 節慶 / 開學)</option>
+        </select>
+
+        <label for="theme">🎯 主題</label>
+        <input type="text" id="theme" placeholder="例如：黑洞科學實驗班招生">
+
+        <label for="keyMessage">💬 核心傳達訊息 (重點)</label>
+        <textarea id="keyMessage" placeholder="例如：不只是死背公式，帶孩子動手做實驗，找回對自然科學的熱血與好奇心。"></textarea>
+
+        <label for="notes">📝 備註 (選填)</label>
+        <input type="text" id="notes" placeholder="例如：附上報名連結、語氣希望更感性一點...">
+
+        <button class="btn" id="generateBtn" onclick="generateContent()">✨ 開始產生文案</button>
+
+        <div class="inspiration-box">
+            <div class="section-title" style="font-size: 0.9rem; margin: 0;">💡 靈感角落 (點擊套用)</div>
+            <div id="tagsContainer" class="tags"></div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'FB')">Facebook</button>
+            <button class="tab" onclick="switchTab(event, 'IG_Post')">IG 貼文</button>
+            <button class="tab" onclick="switchTab(event, 'IG_Story')">IG 限動</button>
+            <button class="tab" onclick="switchTab(event, 'LINE')">LINE 推播</button>
+            <button class="tab" onclick="switchTab(event, 'Threads')">Threads</button>
+        </div>
+        
+        <div class="output-container">
+            <div id="loader" class="loader-wrapper">
+                <div class="spinner"></div> 生命教練正在為您撰寫中，請稍候...
+            </div>
+
+            <div id="FB" class="tab-pane active">
+                <textarea id="output-FB" class="output-box" placeholder="Facebook 文案將顯示於此..."></textarea>
+                <button class="btn copy-btn" onclick="copyText('output-FB')">複製 FB 內容</button>
+            </div>
+            <div id="IG_Post" class="tab-pane">
+                <textarea id="output-IG_Post" class="output-box" placeholder="Instagram 貼文將顯示於此..."></textarea>
+                <button class="btn copy-btn" onclick="copyText('output-IG_Post')">複製 IG 貼文</button>
+            </div>
+            <div id="IG_Story" class="tab-pane">
+                <textarea id="output-IG_Story" class="output-box" placeholder="Instagram 限時動態將顯示於此..."></textarea>
+                <button class="btn copy-btn" onclick="copyText('output-IG_Story')">複製 IG 限動</button>
+            </div>
+            <div id="LINE" class="tab-pane">
+                <textarea id="output-LINE" class="output-box" placeholder="LINE 官方帳號推播將顯示於此..."></textarea>
+                <button class="btn copy-btn" onclick="copyText('output-LINE')">複製 LINE 推播</button>
+            </div>
+            <div id="Threads" class="tab-pane">
+                <textarea id="output-Threads" class="output-box" placeholder="Threads 文案將顯示於此..."></textarea>
+                <button class="btn copy-btn" onclick="copyText('output-Threads')">複製 Threads</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- 品牌大腦資料 (Prompt Base) ---
+    const BRAND_CONTEXT = `
+【逗點教室｜品牌大腦設定】
+你現在是「逗點教室」的專業社群文案指導。請嚴格遵循以下品牌設定：
+
+[核心精神]
+- 使命：打破冷漠框架，透過全人教育與正向境教，讓升學成為熱血且充滿啟發的歷程。
+- 願景：成為生命教練，將教育轉化為正向能量，啟動善的循環。
+- 價值觀：熱血變強(擁抱學習超越自我)、全人教育(重視品格與素養)、正向境教(充滿溫度的學習環境)。
+
+[受眾輪廓 (35-50歲重視教育的媽媽)]
+- 痛點：孩子缺乏動力、親子因成績衝突、怕傳統補習班抹煞創造力。
+- 渴望：孩子眼中有光、找回目標感；需要神隊友(第三方)協助陪伴；重視心理健康與軟實力。
+
+[寫作風格與語氣]
+- 語氣：熱血具啟發性(Inspiring)、溫暖具同理心(Empathetic)、堅定具使命感(Confident)。
+- 常用技巧：反差翻轉(不只是...更是)、共情呼告(我們、逗爸逗媽)、具象化畫面(點燃熱血、善的種子)。
+- 禁用：恐嚇焦慮行銷(輸在起跑點)、唯分數論(考不上就沒救)、冰冷術語(保證班、填鴨)。
+- 標點/Emoji：愛用「」、◤ ◢、｜。點綴 Emoji：✨, 💛, 🫶🏻, 🏆, 🤜🏻🤛🏻, 🔥 (適量勿濫用)。
+`;
+
+    const PLATFORM_RULES = {
+        FB: "【FB 規範】溫暖感性、具深度。適合長篇說故事，引發家長共鳴。結尾引導留言互動。",
+        IG_Post: "【IG貼文 規範】熱血、精煉、活力。貼近學生語感。多用短句與重點 Hashtag (#教育可以不一樣 #熱血變強)。",
+        IG_Story: "【IG限動 規範】極短句(1-2句話)。口語化、日常感。呈現活動熱血氛圍或金句，適合搭配互動貼紙。",
+        LINE: "【LINE推播 規範】親切、專業、直接。破題點出家長為何需要看，像專業班主任的報告，必須有明確行動呼籲(CTA)。",
+        Threads: "【Threads 規範】坦率真實、碎碎念。分享真實教育現場痛點或有趣對話，引發共鳴討論，不官腔。"
+    };
+
+    // --- 靈感角落資料庫 ---
+    const INSPIRATION_DATA = {
+        "產品介紹": [
+            { t: "國小闖關計劃", m: "不只是寫作業，更在遊戲與闖關中培養解決問題的能力與品格。" },
+            { t: "國中戰逗計劃", m: "用正向境教取代高壓填鴨，陪伴孩子度過青春期，一起熱血變強。" },
+            { t: "黑洞科學實驗班", m: "打破死背公式，透過動手做激發好奇心，長出帶得走的科學素養。" }
+        ],
+        "促銷活動": [
+            { t: "高中贏戰計畫早鳥", m: "提早卡位有溫度的學習環境，給孩子一個不被分數綁架的高中生活。" },
+            { t: "態度翻轉戰逗營", m: "寒暑假必備！用營隊體驗翻轉學習態度，結交一起變強的夥伴。" },
+            { t: "親職講座報名", m: "給家長的神隊友支援！生命教練開講，解開親子溝通的死結。" }
+        ],
+        "品牌故事": [
+            { t: "為什麼叫逗點？", m: "因為學習是一場長跑，孩子需要一個允許暫停、充能的溫暖空間。" },
+            { t: "成績以外的驕傲", m: "分享孩子在路跑/營隊中展現的韌性，品格才是陪伴一生的禮物。" },
+            { t: "大飛老師的初心", m: "打破補教業的冰冷，證明教育可以很不一樣，啟動善的循環。" }
+        ],
+        "互動問答": [
+            { t: "孩子不想讀書怎麼辦？", m: "先接住情緒，再給予目標感。分享生命教練如何引導孩子眼中有光。" },
+            { t: "什麼是正向境教？", m: "環境會說話！為何我們堅持打造充滿熱血與支持的教室氛圍？" },
+            { t: "一問功課就吵架？", m: "理解冰山下的焦慮，逗點如何成為親子間最溫暖的第三方橋樑。" }
+        ],
+        "節日借勢": [
+            { t: "會考/學測前夕", m: "成績不代表全部。我們看見了你的努力，逗點永遠是你的後盾！🤜🏻🤛🏻" },
+            { t: "母親節感謝", m: "媽媽辛苦了！把課業交給專業神隊友，把家裡的愛留給彼此。" },
+            { t: "開學收心操", m: "新學期新希望，收起玩心，讓我們跟著夥伴一起熱血變強！🔥" }
+        ]
+    };
+
+    // --- 初始化 ---
+    window.onload = () => {
+        const savedKey = localStorage.getItem('gemini_api_key');
+        if(savedKey) {
+            document.getElementById('apiKey').value = savedKey;
+            document.getElementById('apiStatus').style.display = 'block';
+        }
+        updateInspiration();
+        toggleMode();
+    };
+
+    // --- UI 互動邏輯 ---
+    function toggleMode() {
+        const isApi = document.getElementById('mode-api').checked;
+        document.getElementById('apiConfig').style.display = isApi ? 'block' : 'none';
+        document.getElementById('generateBtn').innerHTML = isApi ? '🤖 呼叫 AI 產生文案' : '📋 產生 Prompt 咒語';
+    }
+
+    function saveApiKey() {
+        const key = document.getElementById('apiKey').value.trim();
+        if(key) {
+            localStorage.setItem('gemini_api_key', key);
+            document.getElementById('apiStatus').style.display = 'block';
+        } else {
+            alert('請輸入有效的 API Key');
+        }
+    }
+
+    function switchTab(evt, platform) {
+        document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(platform).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    function copyText(elementId) {
+        const el = document.getElementById(elementId);
+        el.select();
+        document.execCommand('copy');
+        alert('✨ 內容已複製到剪貼簿！');
+    }
+
+    function updateInspiration() {
+        const type = document.getElementById('copyType').value;
+        const container = document.getElementById('tagsContainer');
+        container.innerHTML = '';
+        INSPIRATION_DATA[type].forEach(item => {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.innerText = item.t;
+            tag.onclick = () => {
+                document.getElementById('theme').value = item.t;
+                document.getElementById('keyMessage').value = item.m;
+            };
+            container.appendChild(tag);
+        });
+    }
+
+    // --- 核心生成邏輯 ---
+    async function generateContent() {
+        const type = document.getElementById('copyType').value;
+        const theme = document.getElementById('theme').value.trim();
+        const msg = document.getElementById('keyMessage').value.trim();
+        const notes = document.getElementById('notes').value.trim();
+
+        if(!theme || !msg) return alert('「主題」與「核心訊息」不能空白喔！');
+
+        const isApi = document.getElementById('mode-api').checked;
+
+        if (isApi) {
+            await runAPI(type, theme, msg, notes);
+        } else {
+            runPrompt(type, theme, msg, notes);
+        }
+    }
+
+    // 模式 1：產生 Prompt 咒語
+    function runPrompt(type, theme, msg, notes) {
+        Object.keys(PLATFORM_RULES).forEach(platform => {
+            const prompt = `${BRAND_CONTEXT}
+
+===========================
+【本次文案任務】
+- 平台：${platform}
+- 類型：${type}
+- 主題：${theme}
+- 核心傳達訊息：${msg}
+- 備註：${notes || "無"}
+- 該平台寫作規範：${PLATFORM_RULES[platform]}
+
+請直接輸出社群文案，不需包含引言或解釋。`;
+            document.getElementById(`output-${platform}`).value = prompt;
+        });
+        alert('📋 Prompt 已組合完成！請切換分頁複製，貼給您的 AI 助手。');
+    }
+
+    // 模式 2：串接 Gemini API
+    async function runAPI(type, theme, msg, notes) {
+        const apiKey = document.getElementById('apiKey').value.trim();
+        if(!apiKey) return alert('請先填寫並儲存 Gemini API Key！');
+
+        const btn = document.getElementById('generateBtn');
+        const loader = document.getElementById('loader');
+        const textareas = document.querySelectorAll('.output-box');
+
+        btn.disabled = true;
+        loader.style.display = 'block';
+        textareas.forEach(ta => ta.value = ''); // 清空舊內容
+
+        // 建立要求 JSON 輸出的強力 Prompt
+        const megaPrompt = `${BRAND_CONTEXT}
+
+【任務說明】
+請根據上述品牌大腦，為「逗點教室」撰寫 5 個不同平台的社群文案。
+- 類型：${type}
+- 主題：${theme}
+- 核心傳達訊息：${msg}
+- 備註條件：${notes || "無"}
+
+【各平台規範與長度限制】
+1. FB: ${PLATFORM_RULES.FB}
+2. IG_Post: ${PLATFORM_RULES.IG_Post}
+3. IG_Story: ${PLATFORM_RULES.IG_Story}
+4. LINE: ${PLATFORM_RULES.LINE}
+5. Threads: ${PLATFORM_RULES.Threads}
+
+【輸出格式嚴格要求】
+你必須回傳一個純 JSON 物件，絕對不要包含 Markdown 代碼區塊標記 (如 \`\`\`json 或 \`\`\`)，也不要有任何其他文字說明。
+JSON 的 Key 必須完全吻合： "FB", "IG_Post", "IG_Story", "LINE", "Threads"。
+`;
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: megaPrompt }] }],
+                    generationConfig: {
+                        response_mime_type: "application/json"
+                    }
+                })
+            });
+
+            if(!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error?.message || 'API 請求失敗');
+            }
+
+            const data = await response.json();
+            const resultText = data.candidates[0].content.parts[0].text;
+            
+            // 安全解析 JSON
+            const resultObj = JSON.parse(resultText);
+
+            document.getElementById('output-FB').value = resultObj.FB || '';
+            document.getElementById('output-IG_Post').value = resultObj.IG_Post || '';
+            document.getElementById('output-IG_Story').value = resultObj.IG_Story || '';
+            document.getElementById('output-LINE').value = resultObj.LINE || '';
+            document.getElementById('output-Threads').value = resultObj.Threads || '';
+
+        } catch (error) {
+            console.error("生成錯誤:", error);
+            alert(`生成失敗，請檢查 API Key 或稍後再試。\n錯誤訊息：${error.message}`);
+        } finally {
+            btn.disabled = false;
+            loader.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
