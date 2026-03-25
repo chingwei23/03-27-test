@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>逗點教室 🔥 品牌文案產生器 (Groq 高速版)</title>
+    <title>逗點教室 🔥 品牌文案產生器 (Groq 完美修復版)</title>
     <style>
         :root {
             --primary-color: #E65100;
@@ -27,7 +27,7 @@
         .main-content { flex: 2 1 600px; display: flex; flex-direction: column; }
         .section-title { font-size: 1.1rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
         label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-main); font-size: 0.95rem; }
-        input[type="text"], textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #E0E0E0; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.95rem; transition: border-color 0.2s; background-color: #FAFAFA; }
+        input[type="text"], input[type="password"], textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #E0E0E0; border-radius: 8px; margin-bottom: 1.2rem; font-size: 0.95rem; transition: border-color 0.2s; background-color: #FAFAFA; }
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary-color); background-color: #FFF; }
         textarea { resize: vertical; min-height: 80px; }
         .btn { background-color: var(--primary-color); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; width: 100%; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
@@ -68,7 +68,7 @@
 <body>
 
 <header>
-    <h1>🚀 逗點教室｜品牌社群文案產生器 (Groq 高速版)</h1>
+    <h1>🚀 逗點教室｜品牌社群文案產生器 (Groq 修復版)</h1>
 </header>
 
 <div class="container">
@@ -85,7 +85,7 @@
         <div class="api-section" id="apiConfig">
             <label>🔑 Groq API Key</label>
             <div class="api-input-wrap">
-                <input type="text" id="apiKey" placeholder="在此貼上 gsk_ 開頭的金鑰...">
+                <input type="password" id="apiKey" placeholder="在此貼上 gsk_ 開頭的金鑰...">
                 <button class="btn btn-outline" style="border-color:#4CAF50; color:#4CAF50;" onclick="saveApiKey()">記住</button>
             </div>
             <div id="apiStatus" class="status-msg">✅ Groq API Key 已安全儲存於瀏覽器</div>
@@ -128,7 +128,7 @@
         
         <div class="output-container">
             <div id="loader" class="loader-wrapper">
-                <div class="spinner"></div> Groq 光速大腦運算中，請稍候...
+                <div class="spinner"></div> Llama-3.3 運算中，請稍候...
             </div>
 
             <div id="FB" class="tab-pane active">
@@ -185,26 +185,181 @@
     };
 
     const INSPIRATION_DATA = {
-        "產品介紹": [
-            { t: "國小闖關計劃", m: "不只是寫作業，更在遊戲與闖關中培養解決問題的能力與品格。" },
-            { t: "國中戰逗計劃", m: "用正向境教取代高壓填鴨，陪伴孩子度過青春期，一起熱血變強。" },
-            { t: "黑洞科學實驗班", m: "打破死背公式，透過動手做激發好奇心，長出帶得走的科學素養。" }
-        ],
-        "促銷活動": [
-            { t: "高中贏戰計畫早鳥", m: "提早卡位有溫度的學習環境，給孩子一個不被分數綁架的高中生活。" },
-            { t: "態度翻轉戰逗營", m: "寒暑假必備！用營隊體驗翻轉學習態度，結交一起變強的夥伴。" },
-            { t: "親職講座報名", m: "給家長的神隊友支援！生命教練開講，解開親子溝通的死結。" }
-        ],
-        "品牌故事": [
-            { t: "為什麼叫逗點？", m: "因為學習是一場長跑，孩子需要一個允許暫停、充能的溫暖空間。" },
-            { t: "成績以外的驕傲", m: "分享孩子在路跑/營隊中展現的韌性，品格才是陪伴一生的禮物。" },
-            { t: "大飛老師的初心", m: "打破補教業的冰冷，證明教育可以很不一樣，啟動善的循環。" }
-        ],
-        "互動問答": [
-            { t: "孩子不想讀書怎麼辦？", m: "先接住情緒，再給予目標感。分享生命教練如何引導孩子眼中有光。" },
-            { t: "什麼是正向境教？", m: "環境會說話！為何我們堅持打造充滿熱血與支持的教室氛圍？" },
-            { t: "一問功課就吵架？", m: "理解冰山下的焦慮，逗點如何成為親子間最溫暖的第三方橋樑。" }
-        ],
-        "節日借勢": [
-            { t: "會考/學測前夕", m: "成績不代表全部。我們看見了你的努力，逗點永遠是你的後盾！🤜🏻🤛🏻" },
-            { t: "母親節感謝", m: "媽媽辛苦了！把課業交給專業神隊友，把家裡的愛留給彼此。" },
+        "產品介紹": [{ t: "國小闖關計劃", m: "不只是寫作業，更在遊戲與闖關中培養解決問題的能力與品格。" }, { t: "國中戰逗計劃", m: "用正向境教取代高壓填鴨，陪伴孩子度過青春期，一起熱血變強。" }, { t: "黑洞科學實驗班", m: "打破死背公式，透過動手做激發好奇心，長出帶得走的科學素養。" }],
+        "促銷活動": [{ t: "高中贏戰計畫早鳥", m: "提早卡位有溫度的學習環境，給孩子一個不被分數綁架的高中生活。" }, { t: "態度翻轉戰逗營", m: "寒暑假必備！用營隊體驗翻轉學習態度，結交一起變強的夥伴。" }, { t: "親職講座報名", m: "給家長的神隊友支援！生命教練開講，解開親子溝通的死結。" }],
+        "品牌故事": [{ t: "為什麼叫逗點？", m: "因為學習是一場長跑，孩子需要一個允許暫停、充能的溫暖空間。" }, { t: "成績以外的驕傲", m: "分享孩子在路跑/營隊中展現的韌性，品格才是陪伴一生的禮物。" }, { t: "大飛老師的初心", m: "打破補教業的冰冷，證明教育可以很不一樣，啟動善的循環。" }],
+        "互動問答": [{ t: "孩子不想讀書怎麼辦？", m: "先接住情緒，再給予目標感。分享生命教練如何引導孩子眼中有光。" }, { t: "什麼是正向境教？", m: "環境會說話！為何我們堅持打造充滿熱血與支持的教室氛圍？" }, { t: "一問功課就吵架？", m: "理解冰山下的焦慮，逗點如何成為親子間最溫暖的第三方橋樑。" }],
+        "節日借勢": [{ t: "會考/學測前夕", m: "成績不代表全部。我們看見了你的努力，逗點永遠是你的後盾！🤜🏻🤛🏻" }, { t: "母親節感謝", m: "媽媽辛苦了！把課業交給專業神隊友，把家裡的愛留給彼此。" }, { t: "開學收心操", m: "新學期新希望，收起玩心，讓我們跟著夥伴一起熱血變強！🔥" }]
+    };
+
+    window.onload = () => {
+        // 【修復點 2】採用與您成功版相同的 LocalStorage 變數名稱 (comma_groq_key)
+        const savedKey = localStorage.getItem('comma_groq_key');
+        if(savedKey) {
+            document.getElementById('apiKey').value = savedKey;
+            document.getElementById('apiStatus').style.display = 'block';
+        }
+        updateInspiration();
+        toggleMode();
+    };
+
+    function toggleMode() {
+        const isApi = document.getElementById('mode-api').checked;
+        document.getElementById('apiConfig').style.display = isApi ? 'block' : 'none';
+        document.getElementById('generateBtn').innerHTML = isApi ? '🤖 呼叫 Llama-3.3 高速產出' : '📋 產生 Prompt 咒語';
+    }
+
+    function saveApiKey() {
+        // 【修復點 3】採用與您成功版相同的存取邏輯
+        const key = document.getElementById('apiKey').value.trim();
+        if(key) {
+            localStorage.setItem('comma_groq_key', key);
+            document.getElementById('apiStatus').style.display = 'block';
+            document.getElementById('apiStatus').innerText = '✅ API 金鑰已安全儲存！';
+            alert('API 金鑰已安全儲存！');
+        } else {
+            alert('請輸入有效的 Groq API Key');
+        }
+    }
+
+    function switchTab(evt, platform) {
+        document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+        document.getElementById(platform).classList.add('active');
+        evt.currentTarget.classList.add('active');
+    }
+
+    function copyText(elementId) {
+        const el = document.getElementById(elementId);
+        el.select();
+        document.execCommand('copy');
+        alert('✨ 內容已複製到剪貼簿！');
+    }
+
+    function updateInspiration() {
+        const type = document.getElementById('copyType').value;
+        const container = document.getElementById('tagsContainer');
+        container.innerHTML = '';
+        INSPIRATION_DATA[type].forEach(item => {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.innerText = item.t;
+            tag.onclick = () => {
+                document.getElementById('theme').value = item.t;
+                document.getElementById('keyMessage').value = item.m;
+            };
+            container.appendChild(tag);
+        });
+    }
+
+    async function generateContent() {
+        const type = document.getElementById('copyType').value;
+        const theme = document.getElementById('theme').value.trim();
+        const msg = document.getElementById('keyMessage').value.trim();
+        const notes = document.getElementById('notes').value.trim();
+
+        if(!theme || !msg) return alert('「主題」與「核心訊息」不能空白喔！');
+
+        const isApi = document.getElementById('mode-api').checked;
+
+        if (isApi) {
+            await runGroqAPI(type, theme, msg, notes);
+        } else {
+            runPrompt(type, theme, msg, notes);
+        }
+    }
+
+    function runPrompt(type, theme, msg, notes) {
+        Object.keys(PLATFORM_RULES).forEach(platform => {
+            const prompt = `${BRAND_CONTEXT}\n===========================\n【本次文案任務】\n- 平台：${platform}\n- 類型：${type}\n- 主題：${theme}\n- 核心傳達訊息：${msg}\n- 備註：${notes || "無"}\n- 該平台寫作規範：${PLATFORM_RULES[platform]}\n\n請直接輸出社群文案，不需包含引言或解釋。`;
+            document.getElementById(`output-${platform}`).value = prompt;
+        });
+        alert('📋 Prompt 已組合完成！');
+    }
+
+    async function runGroqAPI(type, theme, msg, notes) {
+        // 【修復點 4】同樣採用 trim() 來乾淨取得金鑰
+        const apiKey = document.getElementById('apiKey').value.trim();
+        if(!apiKey) return alert('請先填寫並儲存 Groq API Key！');
+
+        const btn = document.getElementById('generateBtn');
+        const loader = document.getElementById('loader');
+        const textareas = document.querySelectorAll('.output-box');
+
+        btn.disabled = true;
+        loader.style.display = 'block';
+        textareas.forEach(ta => ta.value = ''); 
+
+        const megaPrompt = `
+【任務說明】
+請根據系統設定的品牌大腦，為「逗點教室」撰寫 5 個不同平台的社群文案。
+- 類型：${type}
+- 主題：${theme}
+- 核心傳達訊息：${msg}
+- 備註條件：${notes || "無"}
+
+【各平台規範與長度限制】
+1. FB: ${PLATFORM_RULES.FB}
+2. IG_Post: ${PLATFORM_RULES.IG_Post}
+3. IG_Story: ${PLATFORM_RULES.IG_Story}
+4. LINE: ${PLATFORM_RULES.LINE}
+5. Threads: ${PLATFORM_RULES.Threads}
+
+【輸出格式嚴格要求】
+你必須回傳一個純 JSON 物件。不要包含 Markdown 代碼區塊標記 (如 \`\`\`json)，不要有任何其他文字說明。
+確保輸出的 JSON 結構如下：
+{
+  "FB": "...",
+  "IG_Post": "...",
+  "IG_Story": "...",
+  "LINE": "...",
+  "Threads": "..."
+}
+`;
+
+        try {
+            // 【修復點 5】採用您成功版的 Fetch 邏輯與 llama-3.3 模型
+            const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'Authorization': `Bearer ${apiKey}` 
+                },
+                body: JSON.stringify({
+                    model: 'llama-3.3-70b-versatile',
+                    messages: [
+                        { role: "system", content: BRAND_CONTEXT },
+                        { role: "user", content: megaPrompt }
+                    ],
+                    temperature: 0.7,
+                    response_format: { type: "json_object" }
+                })
+            });
+
+            const data = await res.json();
+            
+            if(!res.ok) {
+                throw new Error(data.error?.message || 'API 請求失敗，請檢查金鑰。');
+            }
+
+            const resultText = data.choices[0].message.content;
+            const resultObj = JSON.parse(resultText);
+
+            document.getElementById('output-FB').value = resultObj.FB || '';
+            document.getElementById('output-IG_Post').value = resultObj.IG_Post || '';
+            document.getElementById('output-IG_Story').value = resultObj.IG_Story || '';
+            document.getElementById('output-LINE').value = resultObj.LINE || '';
+            document.getElementById('output-Threads').value = resultObj.Threads || '';
+
+        } catch (error) {
+            console.error("生成錯誤:", error);
+            alert(`生成失敗！\n錯誤訊息：${error.message}`);
+        } finally {
+            btn.disabled = false;
+            loader.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
