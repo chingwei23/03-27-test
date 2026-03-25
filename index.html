@@ -12,7 +12,7 @@
             --secondary-color: #FFB300; /* 溫暖黃 */
             --bg-color: #FFF8F1; /* 溫暖底色 */
             --panel-bg: #FFFFFF;
-            --text-main: #3E2723; /* 深咖啡色字體，比純黑更有溫度 */
+            --text-main: #3E2723;
             --text-muted: #795548;
             --border-color: #FFE0B2;
             --success-color: #43A047;
@@ -82,7 +82,8 @@
             font-size: 0.95rem;
         }
 
-        input[type="text"], input[type="password"], textarea, select { 
+        /* 注意這裡把 password 改成了 text，避免被密碼管理員覆蓋 */
+        input[type="text"], textarea, select { 
             width: 100%; 
             padding: 10px 12px; 
             border: 1px solid #E0E0E0; 
@@ -101,7 +102,6 @@
 
         textarea { resize: vertical; min-height: 80px; }
 
-        /* 按鈕樣式 */
         .btn { 
             background-color: var(--primary-color); 
             color: white; 
@@ -128,7 +128,6 @@
         }
         .btn-outline:hover { background: var(--bg-color); }
 
-        /* 模式切換 */
         .mode-switch { 
             display: flex; 
             gap: 10px; 
@@ -156,7 +155,6 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
         }
 
-        /* API 設定區 */
         .api-section { 
             background: #FFF3E0; 
             padding: 1rem; 
@@ -171,7 +169,6 @@
         .api-input-wrap button { width: auto; white-space: nowrap; padding: 0 15px; }
         .status-msg { font-size: 0.8rem; color: var(--success-color); margin-top: 6px; display: none; font-weight: 600; }
 
-        /* 靈感角落 */
         .inspiration-box { 
             background: var(--bg-color); 
             padding: 1rem; 
@@ -192,7 +189,6 @@
         }
         .tag:hover { border-color: var(--primary-color); color: var(--primary-color); }
 
-        /* 頁籤設計 */
         .tabs { 
             display: flex; 
             background: var(--panel-bg); 
@@ -219,7 +215,6 @@
             background: white; 
         }
 
-        /* 輸出區塊 */
         .output-container { 
             background: var(--panel-bg); 
             padding: 1.5rem; 
@@ -255,7 +250,6 @@
         }
         .copy-btn:hover { background-color: #5D4037; }
 
-        /* Loading 動畫 */
         .loader-wrapper { display: none; text-align: center; padding: 20px; color: var(--primary-color); font-weight: bold; }
         .spinner { 
             border: 4px solid rgba(230, 81, 0, 0.1); 
@@ -296,7 +290,7 @@
         <div class="api-section" id="apiConfig">
             <label>🔑 Gemini API Key</label>
             <div class="api-input-wrap">
-                <input type="password" id="apiKey" placeholder="AIzaSy...">
+                <input type="text" id="apiKey" placeholder="在此貼上 AIza 開頭的金鑰...">
                 <button class="btn btn-outline" onclick="saveApiKey()">記住</button>
             </div>
             <div id="apiStatus" class="status-msg">✅ API Key 已安全儲存於瀏覽器</div>
@@ -367,7 +361,6 @@
 </div>
 
 <script>
-    // --- 品牌大腦資料 (Prompt Base) ---
     const BRAND_CONTEXT = `
 【逗點教室｜品牌大腦設定】
 你現在是「逗點教室」的專業社群文案指導。請嚴格遵循以下品牌設定：
@@ -396,7 +389,6 @@
         Threads: "【Threads 規範】坦率真實、碎碎念。分享真實教育現場痛點或有趣對話，引發共鳴討論，不官腔。"
     };
 
-    // --- 靈感角落資料庫 ---
     const INSPIRATION_DATA = {
         "產品介紹": [
             { t: "國小闖關計劃", m: "不只是寫作業，更在遊戲與闖關中培養解決問題的能力與品格。" },
@@ -425,7 +417,6 @@
         ]
     };
 
-    // --- 初始化 ---
     window.onload = () => {
         const savedKey = localStorage.getItem('gemini_api_key');
         if(savedKey) {
@@ -436,7 +427,6 @@
         toggleMode();
     };
 
-    // --- UI 互動邏輯 ---
     function toggleMode() {
         const isApi = document.getElementById('mode-api').checked;
         document.getElementById('apiConfig').style.display = isApi ? 'block' : 'none';
@@ -483,7 +473,6 @@
         });
     }
 
-    // --- 核心生成邏輯 ---
     async function generateContent() {
         const type = document.getElementById('copyType').value;
         const theme = document.getElementById('theme').value.trim();
@@ -501,7 +490,6 @@
         }
     }
 
-    // 模式 1：產生 Prompt 咒語
     function runPrompt(type, theme, msg, notes) {
         Object.keys(PLATFORM_RULES).forEach(platform => {
             const prompt = `${BRAND_CONTEXT}
@@ -521,9 +509,9 @@
         alert('📋 Prompt 已組合完成！請切換分頁複製，貼給您的 AI 助手。');
     }
 
-    // 模式 2：串接 Gemini API
     async function runAPI(type, theme, msg, notes) {
-        const apiKey = document.getElementById('apiKey').value.trim();
+        // 強制移除所有可能夾帶的空白或換行字元
+        const apiKey = document.getElementById('apiKey').value.replace(/\s+/g, '');
         if(!apiKey) return alert('請先填寫並儲存 Gemini API Key！');
 
         const btn = document.getElementById('generateBtn');
@@ -532,9 +520,8 @@
 
         btn.disabled = true;
         loader.style.display = 'block';
-        textareas.forEach(ta => ta.value = ''); // 清空舊內容
+        textareas.forEach(ta => ta.value = ''); 
 
-        // 建立要求 JSON 輸出的強力 Prompt
         const megaPrompt = `${BRAND_CONTEXT}
 
 【任務說明】
@@ -557,7 +544,9 @@ JSON 的 Key 必須完全吻合： "FB", "IG_Post", "IG_Story", "LINE", "Threads
 `;
 
         try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+            // 使用 encodeURIComponent 確保網址解析安全
+            const safeKey = encodeURIComponent(apiKey);
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${safeKey}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -576,7 +565,6 @@ JSON 的 Key 必須完全吻合： "FB", "IG_Post", "IG_Story", "LINE", "Threads
             const data = await response.json();
             const resultText = data.candidates[0].content.parts[0].text;
             
-            // 安全解析 JSON
             const resultObj = JSON.parse(resultText);
 
             document.getElementById('output-FB').value = resultObj.FB || '';
